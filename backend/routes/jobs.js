@@ -36,13 +36,32 @@ router.post('/', authMiddleware, async (req, res) => {
 // GET ALL JOBS - anyone can view the list of jobs
 router.get('/', async (req, res)=> {
     try {
-        const jobs = await Job.find()
+        const jobs = await Job.find({
+            lastDateToApply: { $gte: new Date() } // Only show jobs that are still open for applications
+        })
             .populate('postedBy', 'name email')
-            .sort({ createdAt: -1 }); // Sort by most recent
+            .sort({ lastDateToApply: 1 });
         
         res.json(jobs);
     } catch(err) {
         res.status(500).json({ message: 'Server error', error: err.message });
+    }
+});
+
+//GET SINGLE JOB BY ID
+router.get('/:id', async (req,res)=> {
+    try {
+        const job = await Job.findById(req.params.id)
+            .populate('postedBy', 'name email');
+        
+        if(!job) {
+            return res.status(404).json({ message: 'Job not found' });
+        }
+
+        res.json(job);
+
+    } catch(err) {
+        res.status(500).json({ message: 'server error', error: err.message });
     }
 });
 
