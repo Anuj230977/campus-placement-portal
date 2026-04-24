@@ -33,6 +33,25 @@ const jobSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    eligibilityCriteria: {
+        minCgpa: {
+            type: Number,
+            default: 0
+        },
+        minTenthPercentage: {
+            type: Number,
+            default: 0
+        },
+        minTwelfthPercentage: {
+            type: Number,
+            default: 0
+        },
+        backlogs: {
+            type: String,
+            enum: ['no_backlogs', 'active_backlogs_allowed','previous_allowed_current_clear'],
+            default: 'no_backlogs'
+        }
+    },
     applicantCount: {
         type: Number,
         default: 0

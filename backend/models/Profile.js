@@ -14,6 +14,20 @@ const profileSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    tenthPercentage: {
+        type: Number
+    },
+    twelfthPercentage: {
+        type: Number
+    },
+    activeBacklogs: {
+        type: Number,
+        default: 0
+    },
+    totalBacklogs: {
+        type: Number,
+        default: 0
+    },
     skills: {
         type: [String]
     },
