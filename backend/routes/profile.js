@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Profile = require('../models/Profile');
 const authMiddleware = require('../middleware/authMiddleware');
+const cloudinary = require('../config/cloudinary');
+const upload = require('../config/upload');
 
 //CREATE OR UPDATE PROFILE - students only
 router.post('/', authMiddleware, async (req, res) => {
@@ -25,7 +27,7 @@ router.post('/', authMiddleware, async (req, res) => {
             profile = await Profile.findOneAndUpdate(
                 { user: req.user.userId },
                 { $set: req.body },
-                { new: true }
+                { returnDocument: 'after' } // changed form { new: true } to { returnDocument: 'after' } for mongoose v6 compatibility
             );
             return res.json({ message: 'Profile updated successfully', profile });
         }
@@ -86,6 +88,47 @@ router.get('/:userId', authMiddleware, async (req, res) => {
 
     } catch (err) {
         res.status(500).json({ message: 'Server error ', error: err.message });
+    }
+});
+
+//UPLOAD RESUME - students only
+router.post('/resume', authMiddleware, upload.single('resume'), async (req,res) => {
+    try {
+        if (req.user.role !== 'student') {
+            return res.status(403).json({ message: 'Only students can upload resume' });
+        }
+        
+        if (!req.file) {
+            return res.status(400).json({ message: 'Please upload a PDF file' });
+        }
+
+        //Upload to cloudinary
+        const result = await new Promise((resolve, reject) => {
+            cloudinary.uploader.upload_stream(
+                { 
+                    resource_type: 'raw',
+                    folder: 'resumes',
+                    public_id: `resume_${req.user.userId}`,
+                    overwrite: true
+                },
+                (error, result) => {
+                    if(error) reject(error);
+                    else resolve(result);
+                }
+            ).end(req.file.buffer);
+        });
+
+        // Save URL to profile
+        await Profile.findOneAndUpdate(
+            { user: req.user.userId },
+            { resumeUrl: result.secure_url },
+            { returnDocument: 'after' } // changed form { new: true } to { returnDocument: 'after' } for mongoose v6 compatibility
+        );
+
+        res.json({ message: 'Resume uploaded successfully', resumeUrl: result.secure_url });
+
+    } catch (err) {
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
 
