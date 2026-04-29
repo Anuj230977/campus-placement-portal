@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import API from '../utils/api'
+import AnimatedBackground from '../components/AnimatedBackground'
 
 function Login() {
     const [email, setEmail] = useState('')
@@ -37,55 +38,55 @@ function Login() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-            <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
-                <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
+        <AnimatedBackground>
+            <div className="backdrop-blur-md bg-white/10 border border-white/20 p-8 rounded-2xl shadow-2xl w-full max-w-md">
+                <h2 className="text-2xl font-bold text-center text-white mb-2">
                     Campus Placement Portal
                 </h2>
-                <h3 className="text-lg font-semibold text-center text-gray-700 mb-4">
+                <h3 className="text-lg font-semibold text-center text-white/70 mb-6">
                     Login
                 </h3>
 
                 <form onSubmit={handleLogin}>
                     <div className="mb-4">
-                        <label className="block text-gray-600 mb-1">Email</label>
-                        <input
+                        <label className="block text-white/80 mb-1">Email</label>
+                        <input 
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-blue-500"
-                            placeholder="Enter your email"
+                            className="w-full bg-white/10 border border-white/20 text-white rounded-lg px-3 py-2 placeholder-white/40 focus:outline-none focus:border-purple-400"
+                            placeholder="enter your email"
                             required
                         />
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-gray-600 mb-1">Password</label>
-                        <input
+                        <label className="block text-white/80 mb-1">Password</label>
+                        <input 
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-blue-500"
+                            className="w-full bg-white/10 border-white/20 text-white rounded-lg px-3 py-2 placeholder-white/40 focus:outline-none focus:border-purple-400"
                             placeholder="Enter your password"
                             required
                         />
                     </div>
 
                     {error && (
-                        <p className="text-red-500 text-sm mb-3">{error}</p>
+                        <p className="text-red-400 text-sm mb-3">{error}</p>
                     )}
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50"
+                        className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg font-semibold disabled:opacity-50"
                     >
                         {loading ? 'Logging in...' : 'Login'}
                     </button>
                 </form>
 
             </div>
-        </div>
+        </AnimatedBackground>
     )
 }
 export default Login
