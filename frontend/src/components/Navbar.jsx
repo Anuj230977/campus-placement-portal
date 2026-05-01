@@ -11,7 +11,7 @@ function Navbar() {
     }
 
     return (
-        <nav className="backdrop-blur-md bg-white/10 border-b border-white/20 px-6 py-4 flex items-center justify-between">
+        <nav className="bg-white border-b border-gray-200 shadow-sm px-6 py-4 flex items-center justify-between">
 
             <Link to="/" className="text-purple-600 font-bold text-xl drop-shadow-lg tracking-wide">
                 🎓 Campus Portal
@@ -20,11 +20,11 @@ function Navbar() {
             <div className="flex items-center gap-4">
                 {user ? (
                     <>
-                        <span className="text-white/70 text-sm">
+                        <span className="text-gray-600 text-sm">
                             Hi, {user.name}!
                         </span>
                         {user.role === 'student' && (
-                            <Link to="/student/dashboard" className="text-white hover:text-purple-300">
+                            <Link to="/student/dashboard" className="text-gray-600 hover:text-purple-600">
                                 Dashboard
                             </Link>
                         )}
@@ -41,7 +41,7 @@ function Navbar() {
                     </>
                 ) : (
                     <>
-                        <Link to ="/login" className="text-white hover:text-purple-300">
+                        <Link to ="/login" className="text-gray-600 hover:text-purple-600">
                             Login
                         </Link>
                         <Link to="/signup" className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 rounded-lg text-sm">
