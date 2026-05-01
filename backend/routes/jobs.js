@@ -6,7 +6,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 //POST A JOB - only companies can do this 
 router.post('/', authMiddleware, async (req, res) => {
     try {
-        const { title, description, ctc, jobLocation, driveLocation, category, eligibleBranches, vacancies, lastDateToApply } = req.body;
+        const { title, description, ctc, jobLocation, driveLocation, category, jobType, eligibleBranches, vacancies, lastDateToApply } = req.body;
         
         // Only companies can post jobs
         if(req.user.role !== 'company') {
@@ -20,6 +20,7 @@ router.post('/', authMiddleware, async (req, res) => {
             jobLocation,
             driveLocation,
             category,
+            jobType,
             eligibleBranches,
             vacancies,
             lastDateToApply,

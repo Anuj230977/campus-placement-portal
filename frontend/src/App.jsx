@@ -1,7 +1,7 @@
 import { BrowserRouter , Routes , Route, useLocation } from 'react-router-dom'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
-import Navbar from './components/Navbar'
+import Home from './pages/Home'
 
 function Layout() {
   const location = useLocation()
@@ -9,9 +9,8 @@ function Layout() {
   
   return (
     <>
-      {!hideNavbar && <Navbar />}
       <Routes>
-        <Route path="/" element={<h1>Home Page</h1>} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
