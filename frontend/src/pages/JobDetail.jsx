@@ -7,6 +7,8 @@ function JobDetail() {
     const [job, setJob] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
+    const [applied, setApplied] = useState(false)
+    const [applyLoading, setApplyLoading] = useState(false)
 
     const { id } = useParams()
     const navigate = useNavigate()
@@ -25,6 +27,18 @@ function JobDetail() {
 
         fetchJob()
     }, [id])
+
+    const handleApply = async () => {
+        setApplyLoading(true)
+        try {
+            await API.post(`/applications/${id}`)
+            setApplied(true)
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to apply')
+        } finally {
+            setApplyLoading(false)
+        }
+    }
 
     return (
         <div className="min-h-screen bg-slate-100">
@@ -60,6 +74,16 @@ function JobDetail() {
                             <span className="text-gray-400">👥 {job.applicantCount} Applied</span>
                             <span className="text-red-400 text-sm">🗓️ Last date: {new Date(job.lastDateToApply).toLocaleDateString()}</span>
                         </div>
+
+                        <div className="mt-6">
+                            <button
+                                onClick={handleApply}
+                                disabled={applied || applyLoading}
+                                className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-semibold disabled:opacity-50 transition">
+                                {applied ? '✅ Applied!' : applyLoading ? 'Applying...' : 'Apply Now'}
+                                </button>
+                        </div>
+
                     </div>    
                 )}
             </div>
