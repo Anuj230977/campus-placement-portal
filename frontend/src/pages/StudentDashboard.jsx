@@ -39,13 +39,18 @@ function StudentDashboard() {
     if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>
     if (error) return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>
 
+    const getStatusStyle = (status) => {
+        if (status === 'shortlisted') return 'bg-green-100 text-green-700'
+        if (status === 'rejected') return 'bg-red-100 text-red-700'
+        return 'bg-gray-100 text-gray-600'
+    }
+
     return (
         <div className="min-h-screen bg-gray-50">
             <Navbar />
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-3xl font-bold mb-6">Welcome, {user.name}!</h1>
 
-                
             </div>
         </div>
     )
